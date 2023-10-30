@@ -1,4 +1,4 @@
-# Dragon Tyrant solution (Salute Team)
+# Dragon Tyrant writeup (Salute Team)
 
 ## Context
 
