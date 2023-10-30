@@ -62,13 +62,13 @@ With both pieces of the legendary equipment in hand, we achieve `type(uint40).ma
 Here is the step-by-step solution:
 
 1. Mint the player token to our own wallet.
-2. Deploy the fake item shop and use it to equip both pieces of the legendary equipment to the player.
-3. Deploy [the attacker contract](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L161) required by the challenge. This attacker contract will own the player token, [initiate the fight](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L79), and provide the player's attack/defend decisions.
+2. Deploy the fake item shop and use it to equip the player with both pieces of the legendary equipment.
+3. Deploy [the attacker contract](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L161), as required by the challenge. This contract will take ownership of the player token, [initiate the fight](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L79), and provide the player's attack/defend decisions.
 4. Transfer the player token to the attacker contract.
-5. Start the pending transaction pool listener. This listener monitors the [resolveRandomness](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L97) transactions, captures the seeds and predicts the next seed once enough information has been gathered.
-6. Mint 78 additional players.
-7. Now the pool listener should have got enough information to predict the next seed.
-8. Feed the predicted seed to the [random number generator](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/Randomness.sol#L58) to get the dragon's attack/defend decisions.
-9. Invert the dragon's decision string bit-wise to get the player's decisions. The attacker contract will return the player's decisions when queried.
-10. The attacker contract initiates the attack and kills the dragon.
+5. Start the pending transaction pool listener, which monitors the [resolveRandomness](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L97) transactions. It captures the seeds and predicts the next seed once it has gathered sufficient information.
+6. Mint 78 additional player tokens.
+7. By now, the pool listener should have gathered enough information to predict the next seed.
+8. Feed the predicted seed into the [random number generator](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/Randomness.sol#L58) to determine the dragon's attack/defend decisions.   
+9. Invert the dragon's decision string bit-wise to derive the player's decisions. When queried, the attacker contract will provide the player's decisions.
+10. The attacker contract initiates the attack, leading to the dragon's defeat.
 
