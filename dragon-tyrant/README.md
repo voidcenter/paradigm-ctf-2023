@@ -10,7 +10,13 @@ You have to initiate the fight and the fight has [at most 256 mini-rounds](https
 
 After each mini-round, the damage is subtracted from both sides' HP. Once a party reaches 0 HP, it is burned and the game ends. If both sides reach 0 HP, [the side that initiated the attack --- the player --- is burned](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L185). 
 
-Lastly, the attack/defense stats of both the dragon and the player are [calculated based on their respective stats and equipment](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L202-L203). Each side can have one weapon and one shield. There are [some pieces of equipment sold in the shop, including a very powerful sword](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/ItemShop.sol#L27-L37). The dragon won't equip anything, while the player starts with [1000 ETH](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/challenge.py#L19). 
+The attack/defense stats of both the dragon and the player are [calculated based on their respective stats and equipment](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L202-L203). Each side can have one weapon and one shield. There are [some pieces of equipment sold in the shop, including a very powerful sword](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/ItemShop.sol#L27-L37). The dragon won't equip anything, while the player starts with [1000 ETH](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/challenge.py#L19). 
+
+There are two places in the game where a random number generator is used. One is [used to determine the player's stats](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L121). The other is [used to determine the dragon's attack/defend decision](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L167). [An ECC-based random number generator](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/Randomness.sol) is used where the seed is [provided from off-chain](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/watcher.py#L68-L69).
+
+
+
+## Analysis
 
 
 
