@@ -35,6 +35,41 @@ So how can we feed this library 20k bits of output from the python random module
 Because the ECC random number generator is deterministic, we can predict the dragon's attack/defense decision. We always do the opposite of what the dragon does. If the dragon attacks, we defend. If the dragon defends, we attack.
 
 
+### Attack/defend stats
+
+Without any equipment, we would lose the battle given our modest stats. The dragon has [`type(uint40).max`](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L42) attack_stats and [`type(uint40).max - 1`](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L44) defense_stats. Without any equipment, we will not cause any damage to the dragon when we attack and the dragon defends. When the dragon attacks and we defend, we will lose immediately. 
+
+Naturally, we eye for [the legendary sword](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/ItemShop.sol#L36). With this sword, our attack_stats would be `type(uint40).max`, resulting in 1 HP damage to the dragon when we attack and the dragon defends. If we repeat this 60 times, the dragon dies. There is hope.
+
+How can we afford the sword, which costs 1m ETH, with only 1k ETH? It turns out that when we [equip the sword](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/NFT.sol#L67), the game lets us pass in the shop contract by ourselves and would happily proceed as long as the shop contract [has been previously approved by the factory contract's owner](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/Factory.sol#L51). Such checking, after looking closely, is not done by checking the shop contract address but by [comparing the shop contract's codehash](https://github.com/voidcenter/paradigm-ctf-2023/blob/main/dragon-tyrant/challenge/project/src/Factory.sol#L43-L48). This means that as long as we pass in a shop contract with the same codehash, we will be able to proceed. Because `extcodehash` doesn't include the constructor, we can potentially create our own itemshop with the same code but a different constructor and use that to equip swords to our player.
+
+This works. Using a fake shop with the following constructor, we are able to obtain the legendary swords as well as a new legendary shield: 
+
+    constructor() {
+        factory = IFactory(msg.sender);
+        _mint(msg.sender, 3, 1, "");
+    
+        _itemInfo[4] =
+            ItemInfo({name: "Legendary Shield", slot: EquipmentSlot.Shield, value: type(uint40).max, price: 1});
+        _mint(msg.sender, 4, 1, "");
+    }
+
+With both these legendary equipment in hand, we have `type(uint40).max` attack_stats and `type(uint40).max` defense_stats. We will not lose any HP when the dragon attacks and we will cause 1 HP damage to the dragon when we attack. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
